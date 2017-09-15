@@ -1,28 +1,101 @@
-# Ng4Forms
+# ANGULAR - FORMS
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.1.
+Angular trannsforms the HTML form in Javascript object. The object looks like:
+```javascript
+{
+	value: {
+		key-one: 'value-one',
+		key-two: 'value-two',
+		key-n: 'value-n'
+	},
+	valid: true
+}
+```
 
-## Development server
+## Two Approache: Template Driven and Reactive
+**Angular** implements two methods to manage a form:
+### Template Driven
+Angular infers de Form Object from the DOM.
+### Reactive
+More complex. Form is created programmatically and synchonized with the DOM. This approach allow a better form handling.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Template Driven
+> **ngModel** Creates a FormControl instance from a domain model and binds it to a form control element. More info: https://angular.io/api/forms/NgModel
+> **ngModel** also can be used to expose additional information about a specific form `#email="ngModel"`.
+### Use ngModel
+- HTML code
+    Add `ngModel` directive to each input in the form
+    ```html
+    <input type="text" id="example" ngModel name="example">
+    ```
+### *"Submit"* form
+- HTML code
+    ```html
+    <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+    ```
+    1. Add `ngSubmit` directive in form tag. More info https://angular.io/guide/forms#submit-the-form-with-ngsubmit
+    2. Bind form with method signature in `ngSubmit` directive.
+    3. Send `ngForm` as a parameter.More info https://angular.io/api/forms/NgForm
+- Typescript code
+    1. Import `NgForm` and `ViewChild`
+        ```typescript
+        import { NgForm } from '@angular/forms';
+        import { ViewChild } from '@angular/core';
+        ```
+    2. Create `@ViewChild` variable.
+        ```typescript
+        @ViewChild('f') signupForm: NgForm;
+        ```
+    3. Use it in method
+        ```typescript
+        onSubmit() {
+         console.log(this.signupForm);
+        }
+        ```
+### Validators
+More info, visit https://angular.io/api/forms/Validators
 
-## Code scaffolding
+### Validator directives
+More info, visit https://angular.io/api?type=directive
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+### Set default value in select
+In select add `[ngModel]="'defaultValueInTS'"`
+**Example**
+```html
+<!-- HTML code  -->
+<select id="secret"
+    class="form-control"
+    [ngModel]="defaultQuestion"
+    name="secret">
+    <option value="pet">Your first pet?</option>
+    <option value="teacher">Your first teacher?</option>
+</select>
+```
+```typescript
+// TypeScript code
+defaultQuestion: string = 'pet';
+```
+### Two-Way-Binding with `ngModel`
+```html
+<!-- HTML code  -->
+<textarea
+ name="questionAnswer"
+ rows="3"
+ class="form-control"
+ [(ngModel)]="answer">
+</textarea>
+<p>Your reply: {{ answer }}</p>
+```
+```typescript
+answer: string = '';
+```
+### `NgModelGroup`
+Creates and binds a FormGroup instance to a DOM element.
+**Example**
+```html
+<div ngModelGroup="stringId">
+```
+To access to the javascript object before _submit_ the form, use the following code:
+```html
+<div id="user-data" ngModelGroup="userData" #userData="ngModelGroup">
+```
