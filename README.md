@@ -99,3 +99,32 @@ To access to the javascript object before _submit_ the form, use the following c
 ```html
 <div id="user-data" ngModelGroup="userData" #userData="ngModelGroup">
 ```
+### Setting and Patching Form Values
+#### Approach One: Fill the form object
+Angular binds the form with the ts object with `NgForm` object. You can fill `NgForm` object from ts with this:
+```typescript
+this.signupForm.setValue({
+    userData: {
+        username: suggestedName,
+        email: ''
+    },
+    secret: 'pet',
+    questionAnswer: '',
+    gender: 'male'
+});
+```
+> To use this approach is necessary fill all object values.
+#### Approach Two: Patch form values
+This approach allows a _parcial fill_. `patchValue()` implementation:
+```typescript
+this.signupForm.form.patchValue({
+    userData: {
+        username: suggestedName
+    }
+});
+```
+### Reset form
+```typescript
+this.signupForm.reset();
+```
+> If you want, you can pass the same object as in `setValue()` to `reset()` which will then reset form to specific values!
