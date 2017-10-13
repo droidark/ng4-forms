@@ -75,6 +75,16 @@ In select add `[ngModel]="'defaultValueInTS'"`
 // TypeScript code
 defaultQuestion: string = 'pet';
 ```
+### Local reference in `ngModel`
+```html
+<!-- HTML code  -->
+<input type="text name="something" #something="ngModel" />
+```
+### One-Way-Binding with `ngModel`
+```html
+<!-- HTML code  -->
+<input type="text name="something" [ngModel]="localVariableInTS" />
+```
 ### Two-Way-Binding with `ngModel`
 ```html
 <!-- HTML code  -->
